@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Predictor · Fútbol</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="floodlight"></div>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-eyebrow" id="refresh-info">Datos en directo · API-Football</span>
+    <h1 class="brand-title">PREDICTOR</h1>
+  </div>
+</header>
+
+<main>
+  <div class="comp-tabs" id="comp-tabs"></div>
+
+  <section class="fixtures-card">
+    <p id="fixtures-status" class="status-msg"></p>
+    <div id="fixtures-list" class="fixtures-list"></div>
+  </section>
+
+  <section id="results" class="results hidden">
+
+    <div class="panel xg-panel">
+      <h2 class="panel-title">Goles esperados</h2>
+      <div class="xg-row">
+        <div class="xg-stat">
+          <span class="xg-number" id="xg-home">0.0</span>
+          <span class="xg-tag" id="xg-home-tag">Local</span>
+        </div>
+        <span class="xg-plus">+</span>
+        <div class="xg-stat">
+          <span class="xg-number" id="xg-away">0.0</span>
+          <span class="xg-tag" id="xg-away-tag">Visitante</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2 class="panel-title">Resultado (1X2)</h2>
+      <div id="bars-1x2" class="bars"></div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <h2 class="panel-title">Ambos marcan</h2>
+        <div id="btts-bars" class="bars"></div>
+      </div>
+      <div class="panel">
+        <h2 class="panel-title">Goles totales</h2>
+        <table class="data-table" id="ou-table"></table>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <h2 class="panel-title">Marcadores más probables</h2>
+        <ol class="score-ticket" id="exact-scores"></ol>
+      </div>
+      <div class="panel">
+        <h2 class="panel-title">Hándicap asiático (al local)</h2>
+        <table class="data-table" id="ah-table"></table>
+      </div>
+    </div>
+
+    <p class="disclaimer">
+      Estimación estadística basada en resultados históricos en directo. No
+      es garantía de resultado ni recomendación de apuesta. Juega con
+      responsabilidad.
+    </p>
+  </section>
+</main>
+
+<script src="/app.js"></script>
+</body>
+</html>
