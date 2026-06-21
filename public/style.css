@@ -1,0 +1,349 @@
+:root {
+  --ink: #0D0D14;
+  --ink-deep: #09090E;
+  --surface: #15151D;
+  --surface-2: #1B1B26;
+  --line: rgba(255, 255, 255, 0.09);
+  --line-strong: rgba(255, 255, 255, 0.16);
+  --paper: #ECEAE3;
+  --muted: #8B8B99;
+  --home: #FF5A36;
+  --away: #2DD4BF;
+  --neutral: #E8B339;
+  --error: #F43F8E;
+
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.floodlight {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 8% 0%, rgba(255, 90, 54, 0.10), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 100% 30%, rgba(45, 212, 191, 0.08), transparent 60%);
+}
+
+.topbar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 2.25rem clamp(1.25rem, 5vw, 3rem) 1.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+.brand-eyebrow::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--home), var(--away));
+  flex-shrink: 0;
+}
+
+.brand-title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(2rem, 5vw, 3rem);
+  letter-spacing: -0.01em;
+  margin: 0;
+  background: linear-gradient(100deg, var(--home) 0%, var(--paper) 38%, var(--paper) 62%, var(--away) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+main {
+  position: relative;
+  z-index: 1;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 2.25rem clamp(1.25rem, 5vw, 3rem) 4rem;
+}
+
+/* Pestañas de competición */
+.comp-tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+  scrollbar-width: none;
+}
+.comp-tabs::-webkit-scrollbar { display: none; }
+
+.comp-tab {
+  flex: 0 0 auto;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.83rem;
+  white-space: nowrap;
+  padding: 0.6rem 1.05rem;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.comp-tab.active {
+  color: var(--ink);
+  border-color: transparent;
+  background: linear-gradient(100deg, var(--home), var(--neutral) 50%, var(--away));
+}
+
+/* Lista de partidos */
+.fixtures-card { margin-bottom: 1rem; }
+
+.fixtures-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.fixture-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 3px solid transparent;
+  border-radius: 10px;
+  padding: 0.95rem 1.1rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.fixture-card:active { background: var(--surface-2); }
+.fixture-card.selected { border-left-color: var(--away); border-color: var(--line-strong); background: var(--surface-2); }
+
+.fixture-meta {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 0.55rem;
+}
+
+.fixture-teams {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.fixture-team {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  flex: 1;
+  color: var(--paper);
+}
+.fixture-team.away { text-align: right; }
+
+.fixture-score {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--paper);
+  min-width: 3.4rem;
+  text-align: center;
+}
+.fixture-score.tbd {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+.fixture-group {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--ink);
+  background: var(--muted);
+  border-radius: 4px;
+  padding: 0.08rem 0.38rem;
+  margin-left: 0.5rem;
+}
+
+.empty-msg {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.85rem;
+  padding: 2rem 1rem;
+}
+
+.status-msg {
+  min-height: 1.2em;
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin: 0.75rem 0 0;
+  text-align: center;
+}
+.status-msg.error { color: var(--error); }
+
+/* Resultados */
+.results { margin-top: 2.25rem; display: flex; flex-direction: column; gap: 1.1rem; }
+.results.hidden { display: none; }
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1.4rem clamp(1.1rem, 3vw, 1.7rem);
+}
+
+.panel-title {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 1.1rem;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.1rem;
+}
+@media (max-width: 640px) {
+  .grid-2 { grid-template-columns: 1fr; }
+}
+
+/* Goles esperados */
+.xg-panel .xg-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+.xg-stat { text-align: center; }
+.xg-number {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 2.5rem;
+  color: var(--paper);
+}
+.xg-stat:first-child .xg-number { color: var(--home); }
+.xg-stat:last-child .xg-number { color: var(--away); }
+.xg-tag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+.xg-plus { font-size: 1.3rem; color: var(--line-strong); font-family: var(--font-display); }
+
+/* Barras de probabilidad: regla con marcador, no relleno decorativo */
+.bars { display: flex; flex-direction: column; gap: 1.05rem; }
+.bar-row { display: grid; grid-template-columns: 100px 1fr 52px; align-items: center; gap: 0.75rem; }
+.bar-label { font-size: 0.82rem; color: var(--muted); }
+.bar-track {
+  position: relative;
+  height: 4px;
+  background: var(--surface-2);
+  border-radius: 999px;
+  background-image: repeating-linear-gradient(
+    90deg, var(--line-strong) 0, var(--line-strong) 1px, transparent 1px, transparent 25%
+  );
+}
+.bar-fill {
+  position: relative;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--muted);
+}
+.bar-fill::after {
+  content: "";
+  position: absolute;
+  right: -1px;
+  top: -3px;
+  width: 2px;
+  height: 10px;
+  background: inherit;
+  border-radius: 1px;
+}
+.bar-row:nth-child(1) .bar-fill { background: var(--home); }
+.bar-row:nth-child(2) .bar-fill { background: var(--neutral); }
+.bar-row:nth-child(3) .bar-fill { background: var(--away); }
+.bar-value { font-family: var(--font-mono); font-size: 0.82rem; text-align: right; color: var(--paper); }
+
+/* Tablas de datos */
+.data-table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+.data-table th, .data-table td {
+  text-align: left;
+  padding: 0.5rem 0.4rem;
+  border-bottom: 1px solid var(--line);
+  color: var(--paper);
+}
+.data-table th {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+.data-table td.num, .data-table th.num { font-family: var(--font-mono); text-align: right; }
+
+/* Marcadores más probables */
+.score-ticket { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+.score-ticket li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  background: var(--surface-2);
+  border-radius: 8px;
+}
+.score-ticket .rank { color: var(--muted); font-family: var(--font-mono); font-size: 0.72rem; width: 1.4rem; }
+.score-ticket .score { font-family: var(--font-mono); font-weight: 600; flex: 1; color: var(--paper); }
+.score-ticket .prob { font-family: var(--font-mono); color: var(--neutral); }
+
+/* Análisis IA */
+.ai-text {
+  font-family: var(--font-body);
+  font-size: 0.93rem;
+  line-height: 1.65;
+  color: var(--paper);
+  margin: 0;
+}
+.ai-text.loading { color: var(--muted); font-style: italic; }
+
+.disclaimer {
+  font-size: 0.76rem;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.55;
+  margin-top: 0.25rem;
+}
