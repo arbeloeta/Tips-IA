@@ -299,6 +299,44 @@ main {
 .bar-row:nth-child(3) .bar-fill { background: var(--away); }
 .bar-value { font-family: var(--font-mono); font-size: 0.82rem; text-align: right; color: var(--paper); }
 
+/* Veredicto: una sola barra partida en 3, mucho más legible que 3 barras sueltas */
+.verdict-text {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--paper);
+  margin: 0 0 1.1rem;
+  line-height: 1.35;
+}
+.verdict-text .pct { font-family: var(--font-mono); }
+
+.split-bar {
+  display: flex;
+  width: 100%;
+  height: 14px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--surface-2);
+}
+.split-segment { height: 100%; transition: flex-basis 0.2s ease; }
+.seg-home { background: var(--home); }
+.seg-draw { background: var(--neutral); }
+.seg-away { background: var(--away); }
+
+.split-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: var(--muted);
+}
+.split-label b { font-size: 0.95rem; }
+.split-label.home { color: var(--home); text-align: left; }
+.split-label.draw { color: var(--neutral); text-align: center; }
+.split-label.away { color: var(--away); text-align: right; }
+.split-label span { color: var(--muted); font-family: var(--font-body); }
+
 /* Tablas de datos */
 .data-table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
 .data-table th, .data-table td {
