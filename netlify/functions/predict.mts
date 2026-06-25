@@ -36,7 +36,7 @@ export default async (req) => {
       );
     }
 
-    const modelOptions = info.type === "international" ? { xi: 0.0006, l2reg: 0.01 } : {};
+    const modelOptions = info.type === "international" ? { xi: 0.0006, l2reg: 0.025 } : {};
     const model = fitModel(matches, modelOptions);
 
     const { matrix, lam, mu } = scoreMatrix(model, home, away);
