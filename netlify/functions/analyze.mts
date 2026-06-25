@@ -33,27 +33,35 @@ Marcador más probable: ${mercados["Marcador exacto (top 10)"]?.[0]?.marcador}
 Responde solo con el análisis, sin preámbulos.`;
 
   try {
-    const resp = await fetch(`${GEMINI_URL}?key=${apiKey}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-      }),
-    });
-
-    if (!resp.ok) {
-      const errText = await resp.text();
-      throw new Error(`Gemini API HTTP ${resp.status}: ${errText.slice(0, 200)}`);
-    }
-
-    const data = await resp.json();
-    const text = data.candidates?.[0]?.content?.parts?.map((p) => p.text).join("\n").trim();
-
+    const text = await callGemini(prompt, apiKey);
     return Response.json({ analysis: text || "No se generó análisis." });
   } catch (e) {
     return Response.json({ error: e.message }, { status: 502 });
   }
 };
+
+async function callGemini(prompt, apiKey, attempt = 1) {
+  const resp = await fetch(`${GEMINI_URL}?key=${apiKey}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: prompt }] }],
+    }),
+  });
+
+  if (!resp.ok) {
+    const errText = await resp.text();
+    const isOverloaded = resp.status === 503 || resp.status === 429;
+    if (isOverloaded && attempt < 3) {
+      await new Promise((r) => setTimeout(r, 1200 * attempt));
+      return callGemini(prompt, apiKey, attempt + 1);
+    }
+    throw new Error(`Gemini API HTTP ${resp.status}: ${errText.slice(0, 200)}`);
+  }
+
+  const data = await resp.json();
+  return data.candidates?.[0]?.content?.parts?.map((p) => p.text).join("\n").trim();
+}
 
 export const config = {
   path: "/api/analyze",
