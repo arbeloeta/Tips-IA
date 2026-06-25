@@ -45,8 +45,18 @@
     </div>
 
     <div class="panel">
-      <h2 class="panel-title">Resultado (1X2)</h2>
-      <div id="bars-1x2" class="bars"></div>
+      <h2 class="panel-title">Veredicto</h2>
+      <p class="verdict-text" id="verdict-text"></p>
+      <div class="split-bar" id="split-bar">
+        <div class="split-segment seg-home" id="seg-home"></div>
+        <div class="split-segment seg-draw" id="seg-draw"></div>
+        <div class="split-segment seg-away" id="seg-away"></div>
+      </div>
+      <div class="split-labels">
+        <span class="split-label home"><b id="split-home-pct"></b>% <span id="split-home-name"></span></span>
+        <span class="split-label draw"><b id="split-draw-pct"></b>% Empate</span>
+        <span class="split-label away"><b id="split-away-pct"></b>% <span id="split-away-name"></span></span>
+      </div>
     </div>
 
     <div class="grid-2">
