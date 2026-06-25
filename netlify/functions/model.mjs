@@ -123,9 +123,18 @@ export function expectedGoals(model, home, away) {
   const rh = model.ratings[home];
   const ra = model.ratings[away];
   if (!rh || !ra) throw new Error(`Equipo no reconocido: ${!rh ? home : away}`);
-  const lam = Math.exp(rh.attack + ra.defense + model.homeAdv);
-  const mu = Math.exp(ra.attack + rh.defense);
+  const lam = dampen(Math.exp(rh.attack + ra.defense + model.homeAdv));
+  const mu = dampen(Math.exp(ra.attack + rh.defense));
   return { lam, mu };
+}
+
+// En fútbol real casi nunca se ven goles esperados por encima de ~4-4.5,
+// incluso en los desniveles más grandes (factores como bajar el ritmo con
+// ventaja amplia no los captura un Poisson puro). Comprimimos suavemente
+// los valores extremos en vez de cortarlos en seco.
+function dampen(x, cap = 4.2, softness = 0.55) {
+  if (x <= cap) return x;
+  return cap + (x - cap) / (1 + (x - cap) * softness);
 }
 
 export function scoreMatrix(model, home, away, maxGoals = MAX_GOALS) {
