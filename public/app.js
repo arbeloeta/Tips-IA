@@ -151,6 +151,38 @@ async function requestAiAnalysis(predictionData, fixture) {
   }
 }
 
+function renderVerdict(markets, fixture) {
+  const m1x2 = markets['1X2'];
+  const pHome = m1x2['1 (Local)'];
+  const pDraw = m1x2['X (Empate)'];
+  const pAway = m1x2['2 (Visitante)'];
+
+  document.getElementById('seg-home').style.flexBasis = `${pHome * 100}%`;
+  document.getElementById('seg-draw').style.flexBasis = `${pDraw * 100}%`;
+  document.getElementById('seg-away').style.flexBasis = `${pAway * 100}%`;
+
+  document.getElementById('split-home-pct').textContent = (pHome * 100).toFixed(0);
+  document.getElementById('split-draw-pct').textContent = (pDraw * 100).toFixed(0);
+  document.getElementById('split-away-pct').textContent = (pAway * 100).toFixed(0);
+  document.getElementById('split-home-name').textContent = fixture.home;
+  document.getElementById('split-away-name').textContent = fixture.away;
+
+  const top = Math.max(pHome, pDraw, pAway);
+  const verdictText = document.getElementById('verdict-text');
+  if (top === pDraw || (Math.abs(pHome - pAway) < 0.08 && top < 0.45)) {
+    verdictText.textContent = `Partido muy igualado, sin favorito claro.`;
+  } else if (top < 0.45) {
+    const fav = pHome > pAway ? fixture.home : fixture.away;
+    verdictText.textContent = `${fav} es ligero favorito, pero está bastante abierto.`;
+  } else if (top < 0.62) {
+    const fav = pHome > pAway ? fixture.home : fixture.away;
+    verdictText.textContent = `${fav} es favorito (${(top * 100).toFixed(0)}%).`;
+  } else {
+    const fav = pHome > pAway ? fixture.home : fixture.away;
+    verdictText.textContent = `${fav} es claro favorito (${(top * 100).toFixed(0)}%).`;
+  }
+}
+
 function renderBars(container, dict) {
   container.innerHTML = '';
   Object.entries(dict).forEach(([label, value]) => {
@@ -211,7 +243,7 @@ function renderResults(data, fixture) {
   document.getElementById('xg-home-tag').textContent = fixture.home;
   document.getElementById('xg-away-tag').textContent = fixture.away;
 
-  renderBars(document.getElementById('bars-1x2'), data.mercados['1X2']);
+  renderVerdict(data.mercados, fixture);
   renderBars(document.getElementById('btts-bars'), data.mercados['Ambos marcan']);
   renderOverUnder(document.getElementById('ou-table'), data.mercados['Goles totales']);
   renderHandicap(document.getElementById('ah-table'), data.mercados['Hándicap asiático']);
